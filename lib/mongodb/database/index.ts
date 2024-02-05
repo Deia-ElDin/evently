@@ -2,21 +2,24 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-let cashed = (global as any).mongoose || { connection: null, promise: null };
+let cached = (global as any).mongoose || { connection: null, promise: null };
 
 export const connectToDb = async () => {
-  if (cashed.connection) return cashed.connection;
+  console.log("Connected to database 0");
+  if (cached.connection) return cached.connection;
 
   if (!MONGODB_URI) throw new Error("Failed to connect to date base");
 
-  cashed.promise =
-    cashed.promise ||
+  cached.promise =
+    cached.promise ||
     mongoose.connect(MONGODB_URI, {
-      dbName: "Evently",
+      dbName: "evently",
       bufferCommands: false,
     });
 
-  cashed.connection = await cashed.promise;
+  cached.connection = await cached.promise;
 
-  return cashed.connection;
+  console.log("Connected to database 1");
+
+  return cached.connection;
 };

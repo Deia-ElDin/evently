@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { connectToDb } from "@/lib/mongodb/database";
+import { connectToDb } from "../mongodb/database";
 import User from "@/lib/mongodb/database/models/user.model";
 import Event from "@/lib/mongodb/database/models/event.model";
 import Order from "@/lib/mongodb/database/models/order.model";
@@ -12,7 +12,9 @@ export async function createUser(user: CreateUserParams) {
   try {
     await connectToDb();
 
+    console.log("Connected to database 2");
     const newUser = await User.create(user);
+    console.log("User: ", user);
     return JSON.parse(JSON.stringify(newUser));
   } catch (error) {
     handleError(error);
